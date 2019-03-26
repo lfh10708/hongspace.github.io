@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Centos7 Minimal 安装 docker 和 gitlab系统准备本系统为 Centos7 minimal 版本 安装 wgetyum -y install wget yum -y install setup yum -y install perl 更改 yum 源（参考页面 https://mirrors.163.com/.help/centos.html ）CentOS 自带的yum">
+<meta name="keywords" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos7 Minimal 安装docker">
+<meta property="og:url" content="http://yoursite.com/2019/03/21/Centos7-Minimal-安装docker/index.html">
+<meta property="og:site_name" content="宏の博客">
+<meta property="og:description" content="Centos7 Minimal 安装 docker 和 gitlab系统准备本系统为 Centos7 minimal 版本 安装 wgetyum -y install wget yum -y install setup yum -y install perl 更改 yum 源（参考页面 https://mirrors.163.com/.help/centos.html ）CentOS 自带的yum">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-21T08:41:12.738Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Centos7 Minimal 安装docker">
+<meta name="twitter:description" content="Centos7 Minimal 安装 docker 和 gitlab系统准备本系统为 Centos7 minimal 版本 安装 wgetyum -y install wget yum -y install setup yum -y install perl 更改 yum 源（参考页面 https://mirrors.163.com/.help/centos.html ）CentOS 自带的yum">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/21/Centos7-Minimal-安装docker/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Centos7 Minimal 安装docker | 宏の博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">宏の博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/21/Centos7-Minimal-安装docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lifh">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宏の博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Centos7 Minimal 安装docker
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-21 01:54:00 / 修改时间：16:41:12" itemprop="dateCreated datePublished" datetime="2019-03-21T01:54:00+08:00">2019-03-21</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Centos7-Minimal-安装-docker-和-gitlab"><a href="#Centos7-Minimal-安装-docker-和-gitlab" class="headerlink" title="Centos7 Minimal 安装 docker 和 gitlab"></a>Centos7 Minimal 安装 docker 和 gitlab</h1><h2 id="系统准备"><a href="#系统准备" class="headerlink" title="系统准备"></a>系统准备</h2><p>本系统为 Centos7 minimal 版本</p>
+<h3 id="安装-wget"><a href="#安装-wget" class="headerlink" title="安装 wget"></a>安装 wget</h3><pre><code>yum -y install wget
+yum -y install setup
+yum -y install perl
+</code></pre><h3 id="更改-yum-源（参考页面-https-mirrors-163-com-help-centos-html-）"><a href="#更改-yum-源（参考页面-https-mirrors-163-com-help-centos-html-）" class="headerlink" title="更改 yum 源（参考页面 https://mirrors.163.com/.help/centos.html ）"></a>更改 yum 源（参考页面 <a href="https://mirrors.163.com/.help/centos.html" target="_blank" rel="noopener">https://mirrors.163.com/.help/centos.html</a> ）</h3><p>CentOS 自带的yum源为国外地址，常常无法正常更新和安装。</p>
+<p>为不影响使用，我们大多会选择国内的一些源地址来提供服务。</p>
+<p>这里使用网易的yum源：</p>
+<p>先备份原文件：</p>
+<pre><code>mv /etc/yum.repos.d/CentOS-Base.repo CentOS-Base.repo.bak
+</code></pre><p> 下载yum源：</p>
+<pre><code>cd /etc/yum.repos.d/
+wget http://mirrors.163.com/.help/CentOS7-Base-163.repo
+</code></pre><p>替换yum源：</p>
+<pre><code>mv CentOS7-Base-163.repo CentOS-Base.repo
+</code></pre><p>将服务器上的软件包信息 现在本地缓存,以提高 搜索 安装软件的速度</p>
+<pre><code>yum clean all
+yum makecache
+</code></pre><p>yum makecache命令，即可正常使用了。</p>
+<p>ps: 由于系统是刚装好的。所以更新了下系统的软件</p>
+<pre><code>yum update
+</code></pre><h1 id="安装-docker"><a href="#安装-docker" class="headerlink" title="安装 docker"></a>安装 docker</h1><h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><pre><code>yum install docker
+</code></pre><p>在安装 docker 之前，了解了 docker 原来也有私有仓库的概念。大概和 maven 私服仓库差不多吧，毕竟个人也会把应用封装成镜像去部署。</p>
+<h2 id="更改docker镜像地址"><a href="#更改docker镜像地址" class="headerlink" title="更改docker镜像地址"></a>更改docker镜像地址</h2><p> docker 默认是以 dockerHub 作为镜像仓库去拉取镜像。但是 dockerHub 的镜像拉取速度太慢，因此我们需要修改 docker 仓镜像地址以提高镜像的拉取速度<br> 这里有几个可以使用：<br> Docker 中国官方镜像加速： <a href="https://registry.docker-cn.com" target="_blank" rel="noopener">https://registry.docker-cn.com</a><br> 网易163 docker镜像： <a href="https://docker.mirrors.ustc.edu.cn" target="_blank" rel="noopener">https://docker.mirrors.ustc.edu.cn</a><br> ustc 的镜像： <a href="https://docker.mirrors.ustc.edu.cn" target="_blank" rel="noopener">https://docker.mirrors.ustc.edu.cn</a><br> 还有 daocloud 和 阿里云的镜像，需要到各自官网注册账号获得地址，这里就不写了</p>
+<p>编辑 /etc/docker/daemon.json 文件，加入 registry-mirrors 的值</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "registry-mirrors": ["https://registry.docker-cn.com","https://docker.mirrors.ustc.edu.cn","https://docker.mirrors.ustc.edu.cn"]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><pre><code>docker ps
+docker search gitlab  #这里打算搜一下gitlab的镜像来着
+</code></pre><p>   但是这时候却给我出现了下面的错误<br>   Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?<br>   原来是我只是安装好了docker，还没有启动<br>       systemctl enable docker # 开机自动启动docker</p>
+<pre><code>systemctl start docker # 启动docker
+systemctl restart docker # 重启dokcer
+</code></pre><p>   启动后运行docker ps 出来了，说明启动成功了<br>   [root@dockerServer ~]# docker ps<br>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</p>
+<h1 id="docker下安装gitlab"><a href="#docker下安装gitlab" class="headerlink" title="docker下安装gitlab"></a>docker下安装gitlab</h1><p>看了下貌似gitlab要从官网变成中文版的话还得打中文补丁，就直接用汉化的社区版吧</p>
+<p>1、搜索镜像</p>
+<p>docker search gitlab</p>
+<p>2、拉取汉化版镜像 </p>
+<p>docker pull docker.io/twang2218/gitlab-ce-zh</p>
+<p>3、数据持久化保存</p>
+<p>因为容器的数据是不能持久化保存的。所以我们需要用 docker volume 的方式将存储的数据映射到操作系统的目录中来。这样就算运行的容器崩溃，我们重新启动一个新的容器，原来容器中的数据还是不会丢失</p>
+<p>我们建立了目录 /soft/gitlab 来保存 gitlab 容器中的数据</p>
+<p>链接来源：<a href="https://juejin.im/post/5a4c9ff36fb9a04507700fcc" target="_blank" rel="noopener">https://juejin.im/post/5a4c9ff36fb9a04507700fcc</a></p>
+<p>4、启动命令</p>
+<p>参考官网<a href="https://docs.gitlab.com/omnibus/docker/README.html" target="_blank" rel="noopener">https://docs.gitlab.com/omnibus/docker/README.html</a></p>
+<pre><code>docker run \
+    --publish 443:443 --publish 80:80 --publish 22:22 \
+    --hostname  gitlab.example.com \
+    --name gitlab \
+    --volume /soft/gitlab/config:/etc/gitlab \
+    --volume /soft/gitlab/logs:/var/log/gitlab \
+    --volume /soft/gitlab/data:/var/opt/gitlab \
+    twang2218/gitlab-ce-zh 
+</code></pre><p>这里把主机的 443、80、22 端口直接转发到容器，同时利用 –volume /soft/gitlab/config:/etc/gitlab 、  –volume /soft/gitlab/logs:/var/log/gitlab 、 –volume /soft/gitlab/data:/var/opt/gitlab 这三个参数将 gitlab 的配置、数据和日志持久化到主机文件系统上来。</p>
+<p>注意：</p>
+<p>1、可以看到最后那一行其实是默认的docker image的名称。由于我们pull的docker image是 docker.io/twang2218/gitlab-ce-zh ，所以启动名称要有相应的变化（去掉前面的docker.io/）。</p>
+<p>2、参数名称全写和简写，取第一个字母，如</p>
+<p>–publish    对应 -p  </p>
+<h1 id="错误集锦"><a href="#错误集锦" class="headerlink" title="错误集锦"></a>错误集锦</h1><p>====================================================</p>
+<p>错误1：</p>
+<p>/usr/bin/docker-current: Error response from daemon: driver failed programming external connectivity on endpoint gitlab (0aa4d7b96503db6b845cf36574c48e2ed0c5d91b15d205a01022cea241ddce76): Error starting userland proxy: listen tcp 0.0.0.0:22: bind: address already in use.<br>ERRO[0000] error getting events from daemon: net/http: request canceled </p>
+<p>原因分析：</p>
+<p>因为宿主机（centos7）的22端口被我用SecureCRT终端操作占用了，所以这里不能这样子处理。</p>
+<p>暂时转移到别的端口去，后面可能需要在gitlab的配置中配置ssh端口号。<a href="https://blog.whsir.com/post-2429.html" target="_blank" rel="noopener">https://blog.whsir.com/post-2429.html</a></p>
+<p>解决方案：</p>
+<p>把参数中的22:22改成   1002:22</p>
+<p>=====================================================</p>
+<p>错误2：</p>
+<p>启动后报这个错：cp: cannot create regular file ‘/etc/gitlab/gitlab.rb’: Permission denied</p>
+<p>原因分析：</p>
+<p>这时由于挂载的本地目录在容器中没有执行权限</p>
+<p>解决方案：</p>
+<p>在运行容器的时候，给容器加入权限参数 –privileged=true以特权方式启动容器 。</p>
+<p>========================================</p>
+<p>最终运行命令如下：</p>
+<pre><code>docker run \
+--publish 1001:443 --publish 1000:80 --publish 1002:22 \
+--hostname  gitlab.example.com \
+--name gitlab \
+--volume /soft/gitlab/config:/etc/gitlab \
+--volume /soft/gitlab/logs:/var/log/gitlab \
+--volume /soft/gitlab/data:/var/opt/gitlab \
+--privileged=true \
+--restart always \
+twang2218/gitlab-ce-zh
+</code></pre><p>参数说明参照<a href="http://www.runoob.com/docker/docker-run-command.html" target="_blank" rel="noopener">http://www.runoob.com/docker/docker-run-command.html</a></p>
+<p>然后访问ip就成功了。进去后要你输入默认用户的密码，默认用户是root，这里密码设置成12345678</p>
+<p>然后登陆后页面如下：</p>
+<p>安装官方版gitlab</p>
+<p>看着这个汉化版有点不习惯，还是试一下官方版吧</p>
+<p>删掉已经生成的容器</p>
+<pre><code>docker rm 容器id
+</code></pre><p>删掉已经下载的镜像文件</p>
+<pre><code>docker image rm 镜像名称shell
+</code></pre><p>再次搜索了下gitlab后发现，gitlab原来分ce（社区版）和ee（企业版），下面使用的是ce版，13.6.4</p>
+<p>拉取镜像</p>
+<pre><code>docker pull docker.io/gitlab/gitlab-ce
+</code></pre><p>设置docker为开机启动</p>
+<pre><code>systemctl start docker #启动docker服务
+systemctl enable docker #设置docker服务为服务器重启后自动启动
+</code></pre><p>启动</p>
+<pre><code>sudo docker run --detach \ 
+    --hostname gitlab.example.com \
+    --publish 1001:443 --publish 1000:80 --publish 1002:22 \
+    --name gitlab \
+    --restart always \
+    --privileged=true \
+    --volume /soft/gitlab/config:/etc/gitlab \
+    --volume /soft/gitlab/logs:/var/log/gitlab \
+    --volume /soft/gitlab/data:/var/opt/gitlab \
+    gitlab/gitlab-ce
+</code></pre><p>其中 –detach 表示从后台启动,–restart 表示该容器的重启策略</p>
+<p>装完后发现。。。还是用快照恢复之前装的中文版吧（因为界面一样啊）</p>
+<p>后续：发现gitlab太占资源了，我8g的虚拟机内存，开了gitlab后就只剩下1g了，还是选用gitea试试（发现gitea是Gogs的分支,那就用Gogs来做吧）<a href="https://www.cnblogs.com/Sungeek/p/9188599.html" target="_blank" rel="noopener">https://www.cnblogs.com/Sungeek/p/9188599.html</a></p>
+<p>待完善部分</p>
+<p>1、docker容器与宿主机交互应该在宿主机中建立专门的用户和权限，而不是使用–privileged=true直接粗暴获取服务器的时间</p>
+<p>2、docker容器里的应用，在网络位置可能要作为一个与宿主机（centos7）同一ip网段的一台机器。使用网桥达到跨主机访问</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/21/lamda/" rel="prev" title="lamda理解">
+                lamda理解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lifh</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">标签</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos7-Minimal-安装-docker-和-gitlab"><span class="nav-number">1.</span> <span class="nav-text">Centos7 Minimal 安装 docker 和 gitlab</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统准备"><span class="nav-number">1.1.</span> <span class="nav-text">系统准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-wget"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装 wget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更改-yum-源（参考页面-https-mirrors-163-com-help-centos-html-）"><span class="nav-number">1.1.2.</span> <span class="nav-text">更改 yum 源（参考页面 https://mirrors.163.com/.help/centos.html ）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-docker"><span class="nav-number">2.</span> <span class="nav-text">安装 docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装docker"><span class="nav-number">2.1.</span> <span class="nav-text">安装docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改docker镜像地址"><span class="nav-number">2.2.</span> <span class="nav-text">更改docker镜像地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">2.3.</span> <span class="nav-text">验证</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#docker下安装gitlab"><span class="nav-number">3.</span> <span class="nav-text">docker下安装gitlab</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#错误集锦"><span class="nav-number">4.</span> <span class="nav-text">错误集锦</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lifh</span>
+
+  
+
+  
+</div>
+
+<!-- 隐藏网页底部powered By Hexo / 强力驱动
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+-->
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
